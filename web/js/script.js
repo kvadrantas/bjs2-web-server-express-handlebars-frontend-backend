@@ -14,14 +14,14 @@ async function getZmones() {
         const dataJson = await fetch("/json/zmones");   //console.log('datajson: ', dataJson);
         if (dataJson.ok) {
             zmones = await dataJson.json();     //console.log('ZMONES: ', zmones);
-            dataProperties = Object.keys(zmones[0]) ;    console.log(dataProperties);
+            dataProperties = Object.keys(zmones[0]) ;    //console.log(dataProperties);
             renderZmones();
         } else {
-            alert('Įvyko klaida1:', + dataJson.status);
+            alert('Įvyko klaida:', + dataJson.status);
         }
     }
     catch (error) {
-        console.log('Įvyko klaida2:', + error);
+        console.log('Įvyko klaida:', + error);
     }
 };
 
@@ -67,7 +67,7 @@ function renderZmones() {
 
 }
 
-// ******************* ADDING NEW RECORD *******************
+// ******************* ADDING NEW RECORD BEGIN *******************
 // FORM 
 // Dinaminis formos kūrimas. Visi elementai sudedami automatiškai priklausomai nuo to, kokius properčius turi duomenys
 
@@ -96,7 +96,35 @@ function newRecordFrom() {
 }
 
 // ACTION 
-function newRecord() {
+async function newRecord() {
+    const vardas = document.getElementById('vardas').value;
+    const pavarde = document.getElementById('pavarde').value;
+    const alga = document.getElementById('alga').value;
+    // console.log(vardas, pavarde, alga);
+    if (vardas.trim() === '' || pavarde.trim() === '' || isNaN(alga)) {
+        alert('Įvesti blogi duomenys');
+        return
+    };
+    const zmogus = {
+        vardas,
+        pavarde,
+        alga
+    };
+    try {
+        const dataJson = await fetch('/json/zmones/', {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(zmogus)
+        });
+        if (dataJson.ok) {
+            getZmones();
+        } else {
+            alert('Klaida: ', dataJson.status)
+        }
+    }
+    catch (error) {
+        console.log('Klaida: ', error.message);
+    }
 
 }
 
