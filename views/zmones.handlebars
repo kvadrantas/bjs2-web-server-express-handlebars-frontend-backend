@@ -1,0 +1,36 @@
+
+  <img style = 'height:60px;' src='./mdn-url-all.png'>
+  <h1>Žmonių sąrašas</h1>
+  <a href="/zmogusEdit">Naujas</a>
+  <ul>
+    {{#each zmones}}
+        <li>
+            <a href="/zmogusEdit?id={{id}}">{{vardas}} {{pavarde}}</a>{{alga}}
+            <a href="/zmogusDelete?id={{id}}">X</a>
+        </li>
+    {{/each}}
+  </ul>
+
+
+{{!-- VIRSUJE NURODYTAS TOKS PATS TEMPLATAS TIK SU HANDLEBATRS SINTAKSE --}}
+{{!-- 
+  let html = "";
+  html += "<html>\r\n";
+  html += "<body>\r\n";
+  html += "<img style = 'height:60px;' src=./mdn-url-all.png>";
+  html += "<h1>Žmonių sąrašas</h1>\r\n";
+  html += '<a href="/zmogusEdit">Naujas</a>\r\n';
+  html += "<ul>\r\n";
+  for (const zmogus of zmones) {
+    html += `
+    <li>
+    <a href="/zmogusEdit?id=${zmogus.id}">${zmogus.vardas} ${zmogus.pavarde}</a>${zmogus.alga}
+    <a href="/zmogusDelete?id=${zmogus.id}">X</a>
+    </li>
+    `;
+  }
+  html += "</ul>\r\n";
+  html += "</body>\r\n";
+  html += "</html>\r\n";
+  res.send(html);
+   --}}

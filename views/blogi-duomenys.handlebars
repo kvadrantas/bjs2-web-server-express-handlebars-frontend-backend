@@ -1,0 +1,27 @@
+<h1>Blogi duomenys</h1>
+    <ul>
+        {{#each klaidos}}
+        {{!-- for (const klaida of klaidos) { --}}
+        <li>
+            <p style="margin: 0;">{{this}}</p>
+        </li>
+        {{/each}}
+    </ul>
+<a href="/zmogusEdit{{#if zmogus}}/?id={{zmogus.id}}{{/if}}">Atgal</a>
+
+
+{{!-- VIRSUJE NURODYTAS TOKS PATS TEMPLATAS TIK SU HANDLEBATRS SINTAKSE --}}
+{{!-- 
+    // let html = "";
+    // html += "<html>\r\n";
+    // html += "<body>\r\n";
+    // html += "<h1>Blogi duomenys</h1>\r\n";
+    // html += "<ul>";
+    // for (const klaida of klaidos) {
+    //   html += `<li><p style="margin: 0;">${klaida}</p></li>\r\n`;
+    // }
+    // html += "</ul>"
+    // html += `<a href="/zmogusEdit${zmogus ? "/?id=" + zmogus.id : ""}">Atgal</a>\r\n"`;
+    // html += "</body>\r\n";
+    // html += "</html>\r\n";
+     --}}

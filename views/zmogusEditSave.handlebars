@@ -1,0 +1,39 @@
+<h1>
+    {{#if zmogus}} 
+        "Žmogaus informacijos redagavimas"
+    {{else}}
+        "Naujas žmogus"
+    {{/if}}
+</h1>
+<form action="/zmogusSave" method="POST">
+    {{#if zmogus}}
+        <input type="hidden" name="id" value="{{zmogus.id}}"><br>
+    {{/if}}
+    Vardas: <input type="text" name="vardas" value="{{#if zmogus}}{{zmogus.vardas}}{{/if}}"><br>
+    Pavarde: <input type="text" name="pavarde" value="{{#if zmogus}}{{zmogus.pavarde}}{{/if}}"><br>
+    Alga: <input type="text" name="alga" value="{{#if zmogus}}{{zmogus.alga}}{{/if}}"><br>
+    <input style="margin: 20px 0" type="submit" value="Save"><br>
+</form>
+<a href="/zmones">Back</a>
+
+
+{{!-- VIRSUJE NURODYTAS TOKS PATS TEMPLATAS TIK SU HANDLEBATRS SINTAKSE --}}
+{{!-- 
+  // let html = "";
+  // html += '<html>\r\n';
+  // html += '<body>\r\n';
+  // html += `<h1>${!zmogus ? "Naujas žmogus" : "Žmogaus informacijos redagavimas"}</h1>\r\n`;
+  // html += '<form action="/zmogusSave" method="POST">\r\n';
+  // if (zmogus) {
+  //   html += `<input type="hidden" name="id" value="${zmogus.id}"><br>\r\n`;
+  // }
+  // html += `Vardas: <input type="text" name="vardas" value="${zmogus ? zmogus.vardas : ""}"><br>\r\n`;
+  // html += `Pavarde: <input type="text" name="pavarde" value="${zmogus ? zmogus.pavarde : ""}"><br>\r\n`;
+  // html += `Alga: <input type="text" name="alga" value="${zmogus ? zmogus.alga : ""}"><br>\r\n`;
+  // html += '<input style="margin: 20px 0" type="submit" value="Save"><br>\r\n';
+  // html += '</form>\r\n';
+  // html += '<a href="/zmones">Back</a>\r\n';
+  // html += '</body>\r\n';
+  // html += '</html>\r\n';
+  // res.send(html);
+   --}}
