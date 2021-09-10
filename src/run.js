@@ -37,6 +37,8 @@ app.use(express.static(WEB, {    // Like "Default Document" on ISS
 app.use(express.urlencoded({
   extended: true,
 }));
+// Suteikia galimybe duomenis konvertuoti i json formatą
+app.use(express.json());
 // *****************************************************************************
 // HANDLEBARS FOR EXPRESS WEB SERVER IMPORT 
 import handleBars from "express-handlebars";
@@ -149,6 +151,42 @@ app.post("/zmogusSave", (req, res) => {
     res.redirect("/zmones");
   }
 });
+
+
+
+// ************************************* FOR FRONTEND ****************************************
+// DATA EXPORT IN JSON FORMAT
+app.get('/json/zmones', (req, res) => {
+  res.set('Content-Type', 'application/json');  // pakeičia turinio tipą į json
+  res.send(JSON.stringify(zmones)); //converts zmones object to json and sends as response
+})
+
+// DELETE RECORD
+app.delete('/json/zmones/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = findIndex((e) => e.id === id);
+  if (index >= 0) {
+    zmones.splice(index, 1);
+  }
+  // response code indicates that a request has succeeded, but that the client doesn't need to navigate away from its current page.
+  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204
+  res.status(204).end();
+})
+
+// ADD RECORD
+app.post('/json/zmones', (req, res) => {
+  zmones.push({
+    id: nextId++,
+    vardas: req.body.vardas,
+    pavarde: req.body.pavarde,
+    alga: req.body.alga
+  })
+  res.status(204).end();
+})
+
+
+
+
 
 
 // *****************************************************************************
