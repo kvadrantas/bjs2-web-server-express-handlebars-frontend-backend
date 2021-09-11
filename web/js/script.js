@@ -100,10 +100,14 @@ function newRecordFrom(event) {
         let input = document.createElement('input');
         input.setAttribute('id', property);
         const br = document.createElement('br');
-        label.appendChild(text);
+        if (property != 'id') label.appendChild(text);
         if (event) {
             input.setAttribute('value', zmones[index][property])
         };
+        if (property === 'id') {
+            label.setAttribute('hidden', true);
+            input.setAttribute('hidden', true);
+        }
         zmonesDOM.appendChild(label);
         zmonesDOM.appendChild(input);
         zmonesDOM.appendChild(br);

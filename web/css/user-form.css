@@ -22,5 +22,18 @@ aaa {
     padding: 0 0 2px;
 }
 
+.form-button {
+    /* height: 18px; */
+    margin: 5px 10px 5px 0;
+    color: #fff;
+    background: none #EE7023;
+    border: 1px solid #EE7023;
+    font: 18px/1 Helvetica, Arial, sans-serif;
+    transition: color 0.3s ease-out;
+    display: inline-block;
+    padding: 13px 15px;
+    border-radius: 3px;
+}
+
 /* asmenine informacija */
 /* gyvenamoji vieta/kontaktai */

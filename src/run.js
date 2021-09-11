@@ -155,7 +155,6 @@ app.delete('/json/zmones/:id', (req, res) => {
 
 // ADD-EDIT RECORD
 app.post('/json/zmones', (req, res) => {
-  console.log('JAU GAVAU: ', req.body.id);
   if (!req.body.id) {
     zmones.push({
       id: nextId2++,
