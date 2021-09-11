@@ -49,7 +49,13 @@ app.set('view engine', 'handlebars');
 
 // DATA
 let nextId = 1;
-const zmones = [
+let zmones = [
+  {
+    id: '',
+    vardas: '',
+    pavarde: '',
+    alga: ''
+  },
   {
     id: nextId++,
     vardas: "Jonas",
@@ -69,7 +75,6 @@ const zmones = [
     alga: 750
   },
 ];
-
 
 
 // DATA RENDERING - (HTML RENDER ONLY)
@@ -164,7 +169,7 @@ app.get('/json/zmones', (req, res) => {
 // DELETE RECORD
 app.delete('/json/zmones/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  const index = findIndex((e) => e.id === id);
+  const index = zmones.findIndex((e) => e.id === id);
   if (index >= 0) {
     zmones.splice(index, 1);
   }
@@ -175,12 +180,21 @@ app.delete('/json/zmones/:id', (req, res) => {
 
 // ADD RECORD
 app.post('/json/zmones', (req, res) => {
-  zmones.push({
-    id: nextId++,
-    vardas: req.body.vardas,
-    pavarde: req.body.pavarde,
-    alga: req.body.alga
-  })
+  console.log('JAU GAVAU: ', req.body.id);
+  if (!req.body.id) {
+    zmones.push({
+      id: nextId++,
+      vardas: req.body.vardas,
+      pavarde: req.body.pavarde,
+      alga: req.body.alga
+    })
+  } else {
+    const id = parseInt(req.body.id);
+    const zmogus = zmones.find((e) => e.id === id);
+    zmogus.vardas = req.body.vardas;
+    zmogus.pavarde = req.body.pavarde;
+    zmogus.alga = req.body.alga;
+  }
   res.status(204).end();
 })
 
