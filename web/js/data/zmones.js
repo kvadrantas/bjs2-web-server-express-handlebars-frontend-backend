@@ -39,4 +39,4 @@ let zmones = [
   },
 ];
 
-export { zmones };
+export { zmones, nextId };

@@ -1,0 +1,26 @@
+label {
+    color: #a38b80;
+    text-transform: capitalize;
+    text-align: right;
+    margin-right: 15px;
+    font: normal 15px/22px Helvetica, Arial, sans-serif;
+}
+
+input {
+    height: 24px;
+    width: 300px;
+    border: 1px solid #bcd8db;
+    background-color: #EBF8F2;
+    border-radius: 3px;
+    font-size: 15px;
+    padding: 13px 10px 13px 10px;
+    margin-bottom: 7px;
+}
+
+aaa {
+    border-bottom: 1px solid #EBE7E2;
+    padding: 0 0 2px;
+}
+
+/* asmenine informacija */
+/* gyvenamoji vieta/kontaktai */

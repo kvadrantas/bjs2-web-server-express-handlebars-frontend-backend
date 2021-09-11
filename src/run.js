@@ -48,7 +48,8 @@ app.set('view engine', 'handlebars');
 
 
 // DATA IMPORT FROM EXTERNAL DATA FILE
-import {zmones} from "../web/js/data/zmones.js";
+import {zmones, nextId} from "../web/js/data/zmones.js";
+let nextId2 = nextId;
 
 
 // DATA RENDERING - (HTML RENDER ONLY)
@@ -157,10 +158,13 @@ app.post('/json/zmones', (req, res) => {
   console.log('JAU GAVAU: ', req.body.id);
   if (!req.body.id) {
     zmones.push({
-      id: nextId++,
+      id: nextId2++,
       vardas: req.body.vardas,
       pavarde: req.body.pavarde,
-      alga: req.body.alga
+      alga: req.body.alga,
+      gimimo_metai: req.body.gimimo_metai,
+      telefonas: req.body.telefonas,
+      adresas: req.body.adresas
     })
   } else {
     const id = parseInt(req.body.id);
@@ -168,6 +172,9 @@ app.post('/json/zmones', (req, res) => {
     zmogus.vardas = req.body.vardas;
     zmogus.pavarde = req.body.pavarde;
     zmogus.alga = req.body.alga;
+    zmogus.gimimo_metai = req.body.gimimo_metai;
+    zmogus.telefonas = req.body.telefonas;
+    zmogus.adresas = req.body.adresas;
   }
   res.status(204).end();
 })

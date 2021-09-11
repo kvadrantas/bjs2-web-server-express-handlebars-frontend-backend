@@ -28,7 +28,7 @@ async function getZmones() {
 function renderZmones() {
     zmonesDOM.innerHTML =  '';
     const table = document.createElement('table');
-    table.setAttribute('border', '1px solid red');
+    // table.setAttribute('border', '1px solid red');
     const tr = document.createElement('tr');
 
     // Dinaminis lenteles headerio html formavimas
@@ -119,11 +119,15 @@ function newRecordFrom(event) {
 // ACTION 
 // 8888888888888888888
 async function newRecord() {
-    const id = document.getElementById('id').value;  console.log('INDEKSAS: ', id);
+    const id = document.getElementById('id').value;  //console.log('INDEKSAS: ', id);
     const vardas = document.getElementById('vardas').value;
     const pavarde = document.getElementById('pavarde').value;
     const alga = document.getElementById('alga').value;
-    if (vardas.trim() === '' || pavarde.trim() === '' || isNaN(alga)) {
+
+    const gimimo_metai = document.getElementById('gimimo_metai').value;
+    const telefonas = document.getElementById('telefonas').value;
+    const adresas = document.getElementById('adresas').value;
+    if (vardas.trim() === '' || pavarde.trim() === '' || isNaN(alga) || isNaN(gimimo_metai) || isNaN(telefonas) || adresas.trim() === '') {
         alert('Įvesti blogi duomenys');
         return
     };
@@ -131,7 +135,10 @@ async function newRecord() {
         id,
         vardas,
         pavarde,
-        alga
+        alga,
+        gimimo_metai,
+        telefonas,
+        adresas
     };
     try {
         const dataJson = await fetch('/json/zmones/', {
