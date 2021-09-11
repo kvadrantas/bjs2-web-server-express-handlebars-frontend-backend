@@ -39,12 +39,25 @@ function renderZmones() {
         tr.appendChild(th);
         th.appendChild(title);
     }
-
+    // const th1 = document.createElement('th');
+    // const th2 = document.createElement('th');
+    // const th3 = document.createElement('th');
     const thEdit = document.createElement('th');
     const thDelete = document.createElement('th');
+    // const title1 = document.createTextNode('Vardas');
+    // const title2 = document.createTextNode('Pavardė');
+    // const title3 = document.createTextNode('Alga');
+
     table.appendChild(tr);
+    // tr.appendChild(th1);
+    // tr.appendChild(th2);
+    // tr.appendChild(th3);
     tr.appendChild(thEdit);
     tr.appendChild(thDelete);
+    // th1.appendChild(title1);
+    // th2.appendChild(title2);
+    // th3.appendChild(title3);
+    
 
     // Dinaminis lenteles turinio html formavimas
     for (const zmogus of zmones) {
@@ -57,9 +70,14 @@ function renderZmones() {
             td.appendChild(cell);
         }
 
-        // Navigation icons (pencil and recyclebin) for record edit and delete
+        // const td1 = document.createElement('td');
+        // const td2 = document.createElement('td');
+        // const td3 = document.createElement('td');
         const tdEdit = document.createElement('td');
         const tdDelete = document.createElement('td');
+        // const cell1 = document.createTextNode(zmogus.vardas);
+        // const cell2 = document.createTextNode(zmogus.pavarde);
+        // const cell3 = document.createTextNode(zmogus.alga);
         const aEdit = document.createElement('a');
         const aDelete = document.createElement('a');
         aEdit.onclick = newRecordFrom;
@@ -71,15 +89,24 @@ function renderZmones() {
         cellDelete.setAttribute('zmogusId', zmogus.id);
         cellEdit.setAttribute('class', 'icon-pencil');
         cellDelete.setAttribute('class', 'icon-trash');
+
         table.appendChild(tr);
+        // tr.appendChild(td1);
+        // tr.appendChild(td2);
+        // tr.appendChild(td3);
         tr.appendChild(tdEdit);
         tr.appendChild(tdDelete);
+        // td1.appendChild(cell1);
+        // td2.appendChild(cell2);
+        // td3.appendChild(cell3);
         aEdit.appendChild(cellEdit)
         aDelete.appendChild(cellDelete)
         tdEdit.appendChild(aEdit);
         tdDelete.appendChild(aDelete);
     }
+
     zmonesDOM.appendChild(table);
+
 }
 
 // ******************* ADDING-EDITING NEW RECORD BEGIN *******************
@@ -88,12 +115,18 @@ function renderZmones() {
 
 function newRecordFrom(event) {
     let index;
+    // console.log(event);
     if (event) {
+        // console.log("/json/zmones/" + event.target.attributes.zmogusId.nodeValue);
         index = event.target.attributes.zmogusId.nodeValue;
+        // console.log(zmones[index]);
     }
     
     zmonesDOM.innerHTML = '';
     for (const property of dataProperties) {
+        // if (!event) {
+            // if (property === 'id') continue;
+        // }
         const text = document.createTextNode(property);
         const label = document.createElement('label');
         label.setAttribute('for', property);
@@ -102,6 +135,9 @@ function newRecordFrom(event) {
         const br = document.createElement('br');
         label.appendChild(text);
         if (event) {
+            // console.log(zmones[index][property]);
+            // input.appendChild(document.createTextNode(zmones[index][property]));
+            // input.value = zmones[index][property];
             input.setAttribute('value', zmones[index][property])
         };
         zmonesDOM.appendChild(label);
@@ -119,10 +155,15 @@ function newRecordFrom(event) {
 // ACTION 
 // 8888888888888888888
 async function newRecord() {
+    // let index = '';
+    // if (document.getElementById('id').value) {
+    //     index = document.getElementById('id').value;
+    // } 
     const id = document.getElementById('id').value;  console.log('INDEKSAS: ', id);
     const vardas = document.getElementById('vardas').value;
     const pavarde = document.getElementById('pavarde').value;
     const alga = document.getElementById('alga').value;
+    // console.log(vardas, pavarde, alga);
     if (vardas.trim() === '' || pavarde.trim() === '' || isNaN(alga)) {
         alert('Įvesti blogi duomenys');
         return
@@ -148,6 +189,7 @@ async function newRecord() {
     catch (error) {
         console.log('Klaida: ', error.message);
     }
+
 }
 
 // ******************* ADDING-EDITING NEW RECORD END *******************
@@ -156,6 +198,7 @@ async function newRecord() {
 
 // ******************* DELETING RECORD *******************
 async function deleteRecord (event) {
+    // console.log("/json/zmones/" + event.target.attributes.zmogusId.nodeValue);
     try {
         const dataJson = await fetch('/json/zmones/' + event.target.attributes.zmogusId.nodeValue,
         {method: 'DELETE'}

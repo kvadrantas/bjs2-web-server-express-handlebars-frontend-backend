@@ -47,34 +47,8 @@ app.set('view engine', 'handlebars');
 // *****************************************************************************
 
 
-// DATA
-let nextId = 1;
-let zmones = [
-  {
-    id: '',
-    vardas: '',
-    pavarde: '',
-    alga: ''
-  },
-  {
-    id: nextId++,
-    vardas: "Jonas",
-    pavarde: "Jonaitis",
-    alga: 7234.56
-  },
-  {
-    id: nextId++,
-    vardas: "Petras",
-    pavarde: "Petraitis",
-    alga: 750
-  },
-  {
-    id: nextId++,
-    vardas: "Antanas",
-    pavarde: "Antanaitis",
-    alga: 750
-  },
-];
+// DATA IMPORT FROM EXTERNAL DATA FILE
+import {zmones} from "../web/js/data/zmones.js";
 
 
 // DATA RENDERING - (HTML RENDER ONLY)
@@ -178,7 +152,7 @@ app.delete('/json/zmones/:id', (req, res) => {
   res.status(204).end();
 })
 
-// ADD RECORD
+// ADD-EDIT RECORD
 app.post('/json/zmones', (req, res) => {
   console.log('JAU GAVAU: ', req.body.id);
   if (!req.body.id) {
