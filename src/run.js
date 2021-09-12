@@ -112,7 +112,7 @@ app.post("/zmogusSave", (req, res) => {
     klaidos.push("Neteisingai įvesta alga");
   }
 
-  // error html render
+  // render errors
   if (klaidos.length > 0) {
     res.render('blogi-duomenys', {klaidos, zmogus});
   } else {

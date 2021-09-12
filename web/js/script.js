@@ -1,31 +1,37 @@
-const zmonesDOM = document.getElementById('zmones-list');
-let dataProperties = [];
-let dataTemplate;
-let zmones = [];
-let id;
+const zmonesDOM = document.getElementById('zmones-list');   // čia dedamas pagrindinis turinys
+let dataTemplate;   // neparuoštas duomenų tempatas (objektas)
+let dataProperties = [];    // paruoštas duomenų templatas iš duomenų properčių (keys)
+let zmones = [];    // duomenys (žmonių sąrayšas)
+let id;     // žmogaus įrašo id
 
 getZmones();
 
-// Changes clicked button background color by adding active class
-function setButtonActive(buttonId) {
+// Pakeičia paspausto mygtuko spalvą pridėdamas active klasę
+// Papildomai keičia pagrindinį pavadinimą priklausomai nuo to, kur esame
+function setButtonActive(buttonId, header) {
     const allNavButtons = document.querySelectorAll('.top-navigation button');
     let id = 1;
     for (const button of allNavButtons) {
         button.classList.remove('active');
     }
-    document.getElementById(buttonId).classList.add('active');
+
+    if (buttonId != 'undefined') {// jei redaguojam įrašą mygtuko stiliaus keisti nereikia, bet reikia pakeisti pagrindinį pavadinimą
+        document.getElementById(buttonId).classList.add('active');
+    }
+    document.querySelector('.main-title').innerHTML = header;
+
 }
 
 // ******************* DATA QUERY FROM JSON URL *******************
+// Gets data from server url in json format
 async function getZmones() {
-    
-    setButtonActive('topbtn2');
     try {
+        setButtonActive('topbtn2', 'Žmonių sąrašas');
         const dataJson = await fetch("/json/zmones");   //console.log('datajson: ', dataJson);
         if (dataJson.ok) {
             zmones = await dataJson.json();     //console.log('ZMONES: ', zmones);
             [dataTemplate, ...zmones] = zmones;     // pirmas elementas yra duomenų templatas, kiti- žmonių duomenys
-            dataProperties = Object.keys(dataTemplate);    //console.log(dataProperties);
+            dataProperties = Object.keys(dataTemplate);    // atrenkam tik objekto raktus (keys)
             renderZmones();
         } else {
             alert('Įvyko klaida:', + dataJson.status);
@@ -40,14 +46,13 @@ async function getZmones() {
 function renderZmones() {
     zmonesDOM.innerHTML =  '';
     const table = document.createElement('table');
-    // table.setAttribute('border', '1px solid red');
     const tr = document.createElement('tr');
 
     // Dinaminis lenteles headerio html formavimas
     for (const property of dataProperties) {
-        if (property === 'id') continue;
+        if (property === 'id') continue;    // id įrašo lentelėje neatvaizduojam
         const th = document.createElement('th');
-        const title = document.createTextNode(property.replace('_', ' '));
+        const title = document.createTextNode(property.replace('_', ' '));  // Formuojam lentelės 1-os eilutės pavadinimus iš templato raktų pavadinimų
         tr.appendChild(th);
         th.appendChild(title);
     }
@@ -64,12 +69,12 @@ function renderZmones() {
         for (const property of dataProperties) {
             if (property === 'id') continue;
             const td = document.createElement('td');
-            const cell = document.createTextNode(zmogus[property]);
+            const cell = document.createTextNode(zmogus[property]);     // atitikmuo zmogus.vardas, zmogus.pavarde ir t.t.
             tr.appendChild(td);
             td.appendChild(cell);
         }
 
-        // Navigation icons (pencil and recyclebin) for record edit and delete
+        // Įrašų redagavimo ir trynimo mygtukai (ikonos)
         const tdEdit = document.createElement('td');
         const tdDelete = document.createElement('td');
         const aEdit = document.createElement('a');
@@ -79,8 +84,8 @@ function renderZmones() {
         const cellEdit = document.createElement('i');
         const cellDelete = document.createElement('i');
         const index = zmones.findIndex(e => e.id === zmogus.id);    // nusistatau ant edit/pieštuko ikonėlės indeksą, kad redaguojant supildutų tinkamai input laukus
-        cellEdit.setAttribute('zmogusId', index);
-        cellDelete.setAttribute('zmogusId', zmogus.id);
+        cellEdit.setAttribute('zmogusId', index);   // naudojamas masyvo indeksas
+        cellDelete.setAttribute('zmogusId', zmogus.id);     // naudojamas indeksas duomenų viduje
         cellEdit.setAttribute('class', 'icon-pencil');
         cellDelete.setAttribute('class', 'icon-trash');
         table.appendChild(tr);
@@ -99,14 +104,17 @@ function renderZmones() {
 // Dinaminis formos kūrimas. Visi elementai sudedami automatiškai priklausomai nuo to, kokius properčius turi duomenys
 
 function newRecordForm(event) {
-    setButtonActive('topbtn1');
+    
     let index;
-    if (event) {
+    if (event) { //tinkrina ar buvo paspaustas edit mygtukas
         index = event.target.attributes.zmogusId.nodeValue;
+        setButtonActive('undefined', 'Įrašo keitimas'); // jei spausta edit, mytuko stiliaus nekeičiam tik puslapio pavadinimą
+    } else {
+        setButtonActive('topbtn1', 'Naujas įrašas');    // jei buvo spausti top navigacijos mygtukai, keičiam ir mygtuko stilių, ir puslapio pavadinimą
     }
     
     zmonesDOM.innerHTML = '';
-    for (const property of dataProperties) {
+    for (const property of dataProperties) {    // iš templato raktų formuojami label
         const text = document.createTextNode(property);
         const label = document.createElement('label');
         label.setAttribute('for', property);
@@ -114,10 +122,10 @@ function newRecordForm(event) {
         input.setAttribute('id', property);
         const br = document.createElement('br');
         if (property != 'id') label.appendChild(text);
-        if (event) {
-            input.setAttribute('value', zmones[index][property])
+        if (event) { // pasitikrina ar kuriam naują įrašą, ar redaguojam seną. Jei seną, tai į value sudeda duomenis
+            input.setAttribute('value', zmones[index][property])    // pvz: zmogus[1].vardas, zmogus[2].pavarde. Ima konkretų žmogų ir konkrečia poerperty reikšmę
         };
-        if (property === 'id') {
+        if (property === 'id') { // su id lauką sukuriam, bet nerodom
             label.setAttribute('hidden', true);
             input.setAttribute('hidden', true);
         }
@@ -134,13 +142,11 @@ function newRecordForm(event) {
 }
 
 // ACTION 
-// 8888888888888888888
 async function newRecord() {
     const id = document.getElementById('id').value;  //console.log('INDEKSAS: ', id);
     const vardas = document.getElementById('vardas').value;
     const pavarde = document.getElementById('pavarde').value;
     const alga = document.getElementById('alga').value;
-
     const gimimo_metai = document.getElementById('gimimo_metai').value;
     const telefonas = document.getElementById('telefonas').value;
     const adresas = document.getElementById('adresas').value;
@@ -180,7 +186,7 @@ async function newRecord() {
 
 // ******************* DELETING RECORD *******************
 async function deleteRecord (event) {
-    try {
+    try {// nurodom id, kurį įrašą trinti
         const dataJson = await fetch('/json/zmones/' + event.target.attributes.zmogusId.nodeValue,
         {method: 'DELETE'}
         );
