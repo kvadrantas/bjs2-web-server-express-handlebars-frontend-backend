@@ -29,6 +29,10 @@ h1 {
     transition: background-color .3s ease-out;
 }
 
+.top-navigation .active {
+    background-color: #fdc129;
+}
+
 .top-navigation button:hover {
     background-color: #fdc129;
 }
@@ -47,7 +51,7 @@ h1 {
 }
 
 table {
-
+    min-width: 830px;
 }
 
 th {
@@ -55,8 +59,11 @@ th {
     height: 48px;
     color: #257886;
     font: normal 15px/18px Helvetica, Arial, sans-serif;
-    text-transform: capitalize;
     padding: 0 20px;
+}
+
+th::first-letter {
+    text-transform: capitalize;
 }
 
 td {

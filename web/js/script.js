@@ -6,8 +6,20 @@ let id;
 
 getZmones();
 
+// Changes clicked button background color by adding active class
+function setButtonActive(buttonId) {
+    const allNavButtons = document.querySelectorAll('.top-navigation button');
+    let id = 1;
+    for (const button of allNavButtons) {
+        button.classList.remove('active');
+    }
+    document.getElementById(buttonId).classList.add('active');
+}
+
 // ******************* DATA QUERY FROM JSON URL *******************
 async function getZmones() {
+    
+    setButtonActive('topbtn2');
     try {
         const dataJson = await fetch("/json/zmones");   //console.log('datajson: ', dataJson);
         if (dataJson.ok) {
@@ -35,7 +47,7 @@ function renderZmones() {
     for (const property of dataProperties) {
         if (property === 'id') continue;
         const th = document.createElement('th');
-        const title = document.createTextNode(property);
+        const title = document.createTextNode(property.replace('_', ' '));
         tr.appendChild(th);
         th.appendChild(title);
     }
@@ -62,7 +74,7 @@ function renderZmones() {
         const tdDelete = document.createElement('td');
         const aEdit = document.createElement('a');
         const aDelete = document.createElement('a');
-        aEdit.onclick = newRecordFrom;
+        aEdit.onclick = newRecordForm;
         aDelete.onclick = deleteRecord;
         const cellEdit = document.createElement('i');
         const cellDelete = document.createElement('i');
@@ -86,7 +98,8 @@ function renderZmones() {
 // FORM 
 // Dinaminis formos kūrimas. Visi elementai sudedami automatiškai priklausomai nuo to, kokius properčius turi duomenys
 
-function newRecordFrom(event) {
+function newRecordForm(event) {
+    setButtonActive('topbtn1');
     let index;
     if (event) {
         index = event.target.attributes.zmogusId.nodeValue;
