@@ -153,19 +153,22 @@ app.delete('/json/zmones/:id', (req, res) => {
   res.status(204).end();
 })
 
-// ADD-EDIT RECORD
+// ADD NEW RECORD
 app.post('/json/zmones', (req, res) => {
-  if (!req.body.id) {
-    zmones.push({
-      id: nextId2++,
-      vardas: req.body.vardas,
-      pavarde: req.body.pavarde,
-      alga: req.body.alga,
-      gimimo_metai: req.body.gimimo_metai,
-      telefonas: req.body.telefonas,
-      adresas: req.body.adresas
-    })
-  } else {
+  zmones.push({
+    id: nextId2++,
+    vardas: req.body.vardas,
+    pavarde: req.body.pavarde,
+    alga: req.body.alga,
+    gimimo_metai: req.body.gimimo_metai,
+    telefonas: req.body.telefonas,
+    adresas: req.body.adresas
+  })
+  res.status(204).end();
+})
+
+// EDIT RECORD
+app.put('/json/zmones', (req, res) => {
     const id = parseInt(req.body.id);
     const zmogus = zmones.find((e) => e.id === id);
     zmogus.vardas = req.body.vardas;
@@ -174,12 +177,8 @@ app.post('/json/zmones', (req, res) => {
     zmogus.gimimo_metai = req.body.gimimo_metai;
     zmogus.telefonas = req.body.telefonas;
     zmogus.adresas = req.body.adresas;
-  }
-  res.status(204).end();
+    res.status(204).end();
 })
-
-
-
 
 
 

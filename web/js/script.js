@@ -29,7 +29,7 @@ async function getZmones() {
         setButtonActive('topbtn2', 'Žmonių sąrašas');
         const dataJson = await fetch("/json/zmones");   //console.log('datajson: ', dataJson);
         if (dataJson.ok) {
-            zmones = await dataJson.json();     //console.log('ZMONES: ', zmones);
+            zmones = await dataJson.json();     //console.log('ZMONES: ', zmones, dataJson);
             [dataTemplate, ...zmones] = zmones;     // pirmas elementas yra duomenų templatas, kiti- žmonių duomenys
             dataProperties = Object.keys(dataTemplate);    // atrenkam tik objekto raktus (keys)
             renderZmones();
@@ -99,8 +99,7 @@ function renderZmones() {
     zmonesDOM.appendChild(table);
 }
 
-// ******************* ADDING-EDITING NEW RECORD BEGIN *******************
-// FORM 
+// ******************* FORM FOR ADDING OR EDITING RECORD BEGIN *******************
 // Dinaminis formos kūrimas. Visi elementai sudedami automatiškai priklausomai nuo to, kokius properčius turi duomenys
 
 function newRecordForm(event) {
@@ -133,15 +132,18 @@ function newRecordForm(event) {
         zmonesDOM.appendChild(input);
         zmonesDOM.appendChild(br);
     }
+
+    let onClickCall = event ? "editRecord()" : "newRecord()";   // event'as yra tik tada kai redaguojame. Tai, kai redaguojam įrašą kviečiam editRecord(), o kai kuriam naują newRecord()
     zmonesDOM.innerHTML += `
     <div class = "form-navigation">
-        <button class = "form-button" onclick = "newRecord()">Išsaugoti</button>
+        <button class = "form-button" onclick = "${onClickCall}">Išsaugoti</button>
         <button class = "form-button" onclick = "getZmones()">Atšaukti</button>
     </div>
     `
 }
+// ******************* FORM FOR ADDING OR EDITING RECORD END *******************
 
-// ACTION 
+// ******************* ADD NEW RECORD BEGIN *******************
 async function newRecord() {
     const id = document.getElementById('id').value;  //console.log('INDEKSAS: ', id);
     const vardas = document.getElementById('vardas').value;
@@ -179,10 +181,47 @@ async function newRecord() {
         console.log('Klaida: ', error.message);
     }
 }
+// ******************* ADD NEW RECORD END *******************
 
-// ******************* ADDING-EDITING NEW RECORD END *******************
-
-
+// ******************* EDIT RECORD BEGIN *******************
+async function editRecord() {
+    const id = document.getElementById('id').value;  //console.log('INDEKSAS: ', id);
+    const vardas = document.getElementById('vardas').value;
+    const pavarde = document.getElementById('pavarde').value;
+    const alga = document.getElementById('alga').value;
+    const gimimo_metai = document.getElementById('gimimo_metai').value;
+    const telefonas = document.getElementById('telefonas').value;
+    const adresas = document.getElementById('adresas').value;
+    if (vardas.trim() === '' || pavarde.trim() === '' || isNaN(alga) || isNaN(gimimo_metai) || isNaN(telefonas) || adresas.trim() === '') {
+        alert('Įvesti blogi duomenys');
+        return
+    };
+    const zmogus = {
+        id,
+        vardas,
+        pavarde,
+        alga,
+        gimimo_metai,
+        telefonas,
+        adresas
+    };
+    try {
+        const dataJson = await fetch('/json/zmones/', {
+            method: "PUT",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(zmogus)
+        });
+        if (dataJson.ok) {
+            getZmones();
+        } else {
+            alert('Klaida: ', dataJson.status)
+        }
+    }
+    catch (error) {
+        console.log('Klaida: ', error.message);
+    }
+}
+// ******************* EDIT RECORD END *******************
 
 // ******************* DELETING RECORD *******************
 async function deleteRecord (event) {
