@@ -171,13 +171,19 @@ app.post('/json/zmones', (req, res) => {
 app.put('/json/zmones', (req, res) => {
     const id = parseInt(req.body.id);
     const zmogus = zmones.find((e) => e.id === id);
-    zmogus.vardas = req.body.vardas;
-    zmogus.pavarde = req.body.pavarde;
-    zmogus.alga = req.body.alga;
-    zmogus.gimimo_metai = req.body.gimimo_metai;
-    zmogus.telefonas = req.body.telefonas;
-    zmogus.adresas = req.body.adresas;
-    res.status(204).end();
+    if (zmogus) {
+      zmogus.vardas = req.body.vardas;
+      zmogus.pavarde = req.body.pavarde;
+      zmogus.alga = req.body.alga;
+      zmogus.gimimo_metai = req.body.gimimo_metai;
+      zmogus.telefonas = req.body.telefonas;
+      zmogus.adresas = req.body.adresas;
+      res.status(204).end();
+    } else {
+      // response code indicates that the server can't find the requested resource
+      res.status(404).end();
+    }
+    
 })
 
 
